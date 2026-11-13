@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
+import 'home_screen.dart';
+import 'app_theme.dart';
 
 void main() {
-  runApp(
-    MaterialApp(
-      theme: ThemeData(
-        colorScheme: .fromSeed(seedColor: Colors.yellow), // Theme
-      ),
-      home: Scaffold(
-        appBar: AppBar(title: const Text('Reefscape Scouting')),
-        body: const Center(child: Text('Hello, World!')),
-      ),
-    ),
-  );
+  runApp(const AppBarApp());
+}
+
+class AppBarApp extends StatelessWidget {
+  const AppBarApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: HomeScreen(),
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: ThemeMode.system,
+    );
+  }
 }
