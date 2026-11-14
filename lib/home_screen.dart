@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(const AppBarApp());
+void main() => runApp(const BearMetalScoutingApp());
 
-class AppBarApp extends StatelessWidget {
-  const AppBarApp({super.key});
+class BearMetalScoutingApp extends StatelessWidget {
+  const BearMetalScoutingApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -76,15 +76,13 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
               ),
-
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('Need Help?'),
+                      const Text('Need Help'),
                       const Icon(
                         Icons.question_mark,
-                        size: 24.0,
+                        size: 20.0,
                       ),
                     ],
                 ),
