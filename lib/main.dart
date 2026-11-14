@@ -4,7 +4,11 @@ import 'app_theme.dart';
 import 'match_selection_screen.dart';
 
 void main() {
-  runApp(const BearMetalScoutingApp());
+  runApp(
+    ProviderScope(
+      child: BearMetalScoutingApp(),
+    ),
+  );
 }
 
 class BearMetalScoutingApp extends StatelessWidget {
