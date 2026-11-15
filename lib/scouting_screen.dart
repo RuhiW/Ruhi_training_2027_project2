@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:training_2027_project2/teleop_tab.dart';
 import 'app_theme.dart';
+import 'auto_tab.dart';
+import 'endgame_tab.dart';
 
 class ScoutingScreen extends StatefulWidget {
   const ScoutingScreen({super.key});

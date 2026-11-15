@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:training_2027_project2/endgame_tab.dart';
+import 'package:training_2027_project2/past_data.dart';
+import 'package:training_2027_project2/teleop_tab.dart';
 import 'home_screen.dart';
 import 'app_theme.dart';
 import 'match_selection_screen.dart';
 import 'scouting_screen.dart';
 import 'settings_screen.dart';
+import 'auto_tab.dart';
 
 void main() {
   runApp(
@@ -20,7 +24,7 @@ class BearMetalScoutingApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const HomeScreen(),
+      home:  PastData(),
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.system,
