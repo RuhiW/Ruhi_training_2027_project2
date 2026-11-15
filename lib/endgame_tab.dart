@@ -92,8 +92,8 @@ class _EndgameTabState extends State<EndgameTab> {
                             children: [
                               Radio<String>(value: 'No Endgame Score'),
                               Text(
-                                  'No Endgame Score',
-                                  style: Theme.of(context).textTheme.labelLarge,
+                                'No Endgame Score',
+                                style: Theme.of(context).textTheme.labelLarge,
                               ),
                             ],
                           ),
@@ -103,8 +103,8 @@ class _EndgameTabState extends State<EndgameTab> {
                             children: [
                               Radio<String>(value: 'Parked'),
                               Text(
-                                  'Parked',
-                                  style: Theme.of(context).textTheme.labelLarge,
+                                'Parked',
+                                style: Theme.of(context).textTheme.labelLarge,
                               ),
                             ],
                           ),
@@ -114,8 +114,8 @@ class _EndgameTabState extends State<EndgameTab> {
                             children: [
                               Radio<String>(value: 'Shallow Cage'),
                               Text(
-                                  'Shallow Cage',
-                                  style: Theme.of(context).textTheme.labelLarge,
+                                'Shallow Cage',
+                                style: Theme.of(context).textTheme.labelLarge,
                               ),
                             ],
                           ),
@@ -125,8 +125,8 @@ class _EndgameTabState extends State<EndgameTab> {
                             children: [
                               Radio<String>(value: 'Deep Cage'),
                               Text(
-                                  'Deep Cage',
-                                  style: Theme.of(context).textTheme.labelLarge,
+                                'Deep Cage',
+                                style: Theme.of(context).textTheme.labelLarge,
                               ),
                             ],
                           ),

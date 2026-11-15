@@ -6,9 +6,7 @@ class AppTheme {
     brightness: Brightness.light,
     fontFamily: GoogleFonts.poppins().fontFamily,
     scaffoldBackgroundColor: Colors.white,
-    iconTheme: IconThemeData(
-      color: Colors.yellow.shade200,
-    ),
+    iconTheme: IconThemeData(color: Colors.yellow.shade200),
 
     colorScheme: ColorScheme.light(
       primary: Colors.black,
@@ -23,19 +21,10 @@ class AppTheme {
         fontSize: 50,
         fontStyle: FontStyle.italic,
       ),
-      labelLarge: GoogleFonts.poppins(
-        fontSize: 28,
-      ),
-      titleMedium: GoogleFonts.poppins(
-        fontSize: 22,
-      ),
-      titleLarge: GoogleFonts.poppins(
-        fontSize: 30,
-      ),
-      bodyLarge: GoogleFonts.poppins(
-        fontSize: 28,
-        fontWeight: FontWeight.bold,
-      ),
+      labelLarge: GoogleFonts.poppins(fontSize: 28),
+      titleMedium: GoogleFonts.poppins(fontSize: 22),
+      titleLarge: GoogleFonts.poppins(fontSize: 30),
+      bodyLarge: GoogleFonts.poppins(fontSize: 28, fontWeight: FontWeight.bold),
     ),
   );
 
@@ -43,9 +32,7 @@ class AppTheme {
     brightness: Brightness.dark,
     fontFamily: GoogleFonts.poppins().fontFamily,
     scaffoldBackgroundColor: Colors.grey.shade900,
-    iconTheme: IconThemeData(
-      color: Colors.yellow,
-    ),
+    iconTheme: IconThemeData(color: Colors.yellow),
 
     colorScheme: ColorScheme.dark(
       primary: Colors.yellow,
@@ -60,23 +47,12 @@ class AppTheme {
         fontSize: 50,
         fontStyle: FontStyle.italic,
       ),
-      titleMedium: GoogleFonts.poppins(
-        fontSize: 22,
-      ),
-      titleLarge: GoogleFonts.poppins(
-        fontSize: 30,
-      ),
+      titleMedium: GoogleFonts.poppins(fontSize: 22),
+      titleLarge: GoogleFonts.poppins(fontSize: 30),
       bodyMedium: GoogleFonts.getFont('Poppins'),
       displaySmall: GoogleFonts.getFont('Poppins'),
-      labelLarge: GoogleFonts.poppins(
-        fontSize: 28,
-      ),
-      bodyLarge: GoogleFonts.poppins(
-        fontSize: 28,
-        fontWeight: FontWeight.bold,
-      ),
+      labelLarge: GoogleFonts.poppins(fontSize: 28),
+      bodyLarge: GoogleFonts.poppins(fontSize: 28, fontWeight: FontWeight.bold),
     ),
   );
 }
-
-

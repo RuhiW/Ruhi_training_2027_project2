@@ -7,10 +7,7 @@ class PastData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text('Scouting Database'),
-      ),
+      appBar: AppBar(centerTitle: true, title: Text('Scouting Database')),
       body: Container(
         color: Theme.of(context).scaffoldBackgroundColor,
         child: Column(
@@ -39,10 +36,7 @@ class PastData extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    'Match:',
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
+                  Text('Match:', style: Theme.of(context).textTheme.bodyLarge),
                   const SizedBox(width: 15),
                   DropdownButton<String>(
                     value: 'All Matches',
@@ -63,10 +57,7 @@ class PastData extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    'Team:',
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
+                  Text('Team:', style: Theme.of(context).textTheme.bodyLarge),
                   const SizedBox(width: 15),
                   DropdownButton<String>(
                     value: 'All Teams',

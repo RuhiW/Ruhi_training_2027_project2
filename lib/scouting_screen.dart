@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:training_2027_project2/teleop_tab.dart';
+
 import 'app_theme.dart';
 import 'auto_tab.dart';
 import 'endgame_tab.dart';
@@ -11,7 +12,8 @@ class ScoutingScreen extends StatefulWidget {
   State<ScoutingScreen> createState() => _MyTabbedPageState();
 }
 
-class _MyTabbedPageState extends State<ScoutingScreen> with SingleTickerProviderStateMixin {
+class _MyTabbedPageState extends State<ScoutingScreen>
+    with SingleTickerProviderStateMixin {
   static const List<Tab> myTabs = <Tab>[
     Tab(text: 'Auto'),
     Tab(text: 'Teleop'),
@@ -48,11 +50,7 @@ class _MyTabbedPageState extends State<ScoutingScreen> with SingleTickerProvider
       ),
       body: TabBarView(
         controller: _tabController,
-        children: [
-          AutoTab(),
-          TeleopTab(),
-          EndgameTab(),
-        ],
+        children: [AutoTab(), TeleopTab(), EndgameTab()],
       ),
     );
   }

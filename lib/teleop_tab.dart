@@ -59,15 +59,9 @@ class TeleopTab extends StatelessWidget {
           Expanded(
             child: Row(
               children: [
-                Expanded(
-                  child: TeleopScoreBox(title: 'Score L4'),
-                ),
-                Expanded(
-                  child: TeleopScoreBox(title: 'Miss for L4'),
-                ),
-                Expanded(
-                  child: TeleopScoreBox(title: 'Algae Processed'),
-                ),
+                Expanded(child: TeleopScoreBox(title: 'Score L4')),
+                Expanded(child: TeleopScoreBox(title: 'Miss for L4')),
+                Expanded(child: TeleopScoreBox(title: 'Algae Processed')),
               ],
             ),
           ),
@@ -75,15 +69,9 @@ class TeleopTab extends StatelessWidget {
           Expanded(
             child: Row(
               children: [
-                Expanded(
-                  child: TeleopScoreBox(title: 'Score L3'),
-                ),
-                Expanded(
-                  child: TeleopScoreBox(title: 'Miss for L3'),
-                ),
-                Expanded(
-                  child: TeleopScoreBox(title: 'Algae in Net'),
-                ),
+                Expanded(child: TeleopScoreBox(title: 'Score L3')),
+                Expanded(child: TeleopScoreBox(title: 'Miss for L3')),
+                Expanded(child: TeleopScoreBox(title: 'Algae in Net')),
               ],
             ),
           ),
@@ -91,15 +79,9 @@ class TeleopTab extends StatelessWidget {
           Expanded(
             child: Row(
               children: [
-                Expanded(
-                  child: TeleopScoreBox(title: 'Score L2'),
-                ),
-                Expanded(
-                  child: TeleopScoreBox(title: 'Miss for L2'),
-                ),
-                Expanded(
-                  child: BrokeBox(),
-                ),
+                Expanded(child: TeleopScoreBox(title: 'Score L2')),
+                Expanded(child: TeleopScoreBox(title: 'Miss for L2')),
+                Expanded(child: BrokeBox()),
               ],
             ),
           ),
@@ -107,15 +89,9 @@ class TeleopTab extends StatelessWidget {
           Expanded(
             child: Row(
               children: [
-                Expanded(
-                  child: TeleopScoreBox(title: 'Score L1'),
-                ),
-                Expanded(
-                  child: TeleopScoreBox(title: 'Miss for L1'),
-                ),
-                Expanded(
-                  child: TeleopScoreBox(title: 'Penalties'),
-                ),
+                Expanded(child: TeleopScoreBox(title: 'Score L1')),
+                Expanded(child: TeleopScoreBox(title: 'Miss for L1')),
+                Expanded(child: TeleopScoreBox(title: 'Penalties')),
               ],
             ),
           ),
@@ -128,10 +104,7 @@ class TeleopTab extends StatelessWidget {
 class TeleopScoreBox extends StatefulWidget {
   final String title;
 
-  const TeleopScoreBox({
-    super.key,
-    required this.title,
-  });
+  const TeleopScoreBox({super.key, required this.title});
 
   @override
   State<TeleopScoreBox> createState() => _TeleopScoreBoxState();
@@ -143,15 +116,10 @@ class _TeleopScoreBoxState extends State<TeleopScoreBox> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.black),
-      ),
+      decoration: BoxDecoration(border: Border.all(color: Colors.black)),
       child: Column(
         children: [
-          Text(
-            widget.title,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
+          Text(widget.title, style: Theme.of(context).textTheme.titleMedium),
 
           Expanded(
             child: Row(
@@ -168,10 +136,7 @@ class _TeleopScoreBoxState extends State<TeleopScoreBox> {
                   icon: Icon(Icons.remove),
                 ),
 
-                Text(
-                  '$score',
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
+                Text('$score', style: Theme.of(context).textTheme.bodyLarge),
 
                 IconButton(
                   onPressed: () {
@@ -203,15 +168,10 @@ class _BrokeBoxState extends State<BrokeBox> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.black),
-      ),
+      decoration: BoxDecoration(border: Border.all(color: Colors.black)),
       child: Column(
         children: [
-          Text(
-            'Broke?',
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
+          Text('Broke?', style: Theme.of(context).textTheme.titleMedium),
 
           Expanded(
             child: Material(
@@ -228,17 +188,11 @@ class _BrokeBoxState extends State<BrokeBox> {
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Radio<bool>(value: true),
-                        Text('Yes'),
-                      ],
+                      children: [Radio<bool>(value: true), Text('Yes')],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Radio<bool>(value: false),
-                        Text('No'),
-                      ],
+                      children: [Radio<bool>(value: false), Text('No')],
                     ),
                   ],
                 ),
