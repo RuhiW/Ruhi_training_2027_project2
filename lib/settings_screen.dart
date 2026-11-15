@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'app_theme.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -49,6 +50,14 @@ class SettingsScreen extends StatelessWidget {
                 title: Text('Inkllafa'),
               ),
             ],
+          ),
+          ElevatedButton(
+            onPressed: () {
+              context.go('/');
+            },
+            child: const Text(
+              'Go Home',
+            ),
           ),
         ],
       ),

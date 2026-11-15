@@ -9,6 +9,7 @@ import 'match_selection_screen.dart';
 import 'scouting_screen.dart';
 import 'settings_screen.dart';
 import 'auto_tab.dart';
+import 'app_router.dart';
 
 void main() {
   runApp(
@@ -23,8 +24,8 @@ class BearMetalScoutingApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home:  PastData(),
+    return MaterialApp.router(
+      routerConfig: router,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.system,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'app_theme.dart';
+import 'app_router.dart';
 
 enum Alliance {red, blue}
 
@@ -117,7 +119,9 @@ class MatchSelectionScreen extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   fixedSize: const Size(300, 70),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  context.go('/scouting-screen');
+                },
                 child: const Text(
                     'Continue',
                     style: TextStyle(

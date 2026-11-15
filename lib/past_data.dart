@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class PastData extends StatelessWidget {
   const PastData({super.key});
@@ -14,6 +15,15 @@ class PastData extends StatelessWidget {
         color: Theme.of(context).scaffoldBackgroundColor,
         child: Column(
           children: [
+            const SizedBox(height: 20),
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  context.go('/');
+                },
+                child: Text('Go Home'),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.all(15),
               child: Center(

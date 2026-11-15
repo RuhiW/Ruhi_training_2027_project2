@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class EndgameTab extends StatefulWidget {
   const EndgameTab({super.key});
@@ -138,6 +139,7 @@ class _EndgameTabState extends State<EndgameTab> {
 
                   ElevatedButton(
                     onPressed: () {
+                      context.go('/');
                     },
                     child: Text('Save and Quit'),
                   ),

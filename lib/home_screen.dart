@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 void main() => runApp(const BearMetalScoutingApp());
 
@@ -39,7 +40,9 @@ class HomeScreen extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   fixedSize: const Size(300, 100),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  context.go('/match-selection-screen');
+                },
                 child: const Text(
                   'Start Scouting',
                   style: TextStyle(
@@ -53,7 +56,9 @@ class HomeScreen extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   fixedSize: const Size(300, 100),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  context.go('/past-data');
+                },
                 child: const Text(
                   'View Past Data',
                   style: TextStyle(
@@ -67,7 +72,9 @@ class HomeScreen extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   fixedSize: const Size(300, 100),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  context.go('/settings');
+                },
                 child: const Text(
                   'Settings',
                   style: TextStyle(
@@ -92,7 +99,6 @@ class HomeScreen extends StatelessWidget {
         );
     }
   }
-
 
 
 
