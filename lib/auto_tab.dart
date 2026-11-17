@@ -1,10 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:training_2027_project2/scouting_record_provider.dart';
 
-class AutoTab extends StatelessWidget {
+enum AutoScoreField {
+  coralL1,
+  coralL2,
+  coralL3,
+  coralL4,
+  algaeNet,
+  algaeProcessed,
+}
+
+class AutoTab extends ConsumerWidget {
   const AutoTab({super.key});
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final scoutingRecord = ref.watch(scoutingRecordProvider);
+
     return Column(
       children: [
         SizedBox(
@@ -18,7 +30,7 @@ class AutoTab extends StatelessWidget {
                   ),
                   child: Center(
                     child: Text(
-                      'Box 1',
+                      'Match: ${scoutingRecord?.matchNumber ?? '-'}',
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ),
@@ -31,7 +43,7 @@ class AutoTab extends StatelessWidget {
                   ),
                   child: Center(
                     child: Text(
-                      'Box 2',
+                      'Team: ${scoutingRecord?.teamNumber ?? '-'}',
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ),
@@ -44,7 +56,7 @@ class AutoTab extends StatelessWidget {
                   ),
                   child: Center(
                     child: Text(
-                      'Box 3',
+                      'Alliance: ${scoutingRecord?.alliancePosition.name ?? '-'}',
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ),
@@ -53,30 +65,59 @@ class AutoTab extends StatelessWidget {
             ],
           ),
         ),
-
         Expanded(
           child: Row(
             children: [
-              Expanded(child: ScoreBox(title: 'Score L4')),
-              Expanded(child: ScoreBox(title: 'Score L2')),
+              Expanded(
+                child: ScoreBox(
+                  title: 'Score L4',
+                  field: AutoScoreField.coralL4,
+                ),
+              ),
+              Expanded(
+                child: ScoreBox(
+                  title: 'Score L2',
+                  field: AutoScoreField.coralL2,
+                ),
+              ),
             ],
           ),
         ),
 
-        Expanded(
-          child: Row(
-            children: [
-              Expanded(child: ScoreBox(title: 'Score L4')),
-              Expanded(child: ScoreBox(title: 'Score L1')),
-            ],
-          ),
-        ),
 
         Expanded(
           child: Row(
             children: [
-              Expanded(child: ScoreBox(title: 'Algae in Net')),
-              Expanded(child: ScoreBox(title: 'Algae Processed')),
+              Expanded(
+                child: ScoreBox(
+                  title: 'Score L3',
+                  field: AutoScoreField.coralL3,
+                ),
+              ),
+              Expanded(
+                child: ScoreBox(
+                  title: 'Score L1',
+                  field: AutoScoreField.coralL1,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: Row(
+            children: [
+              Expanded(
+                child: ScoreBox(
+                  title: 'Algae in Net',
+                  field: AutoScoreField.algaeNet,
+                ),
+              ),
+              Expanded(
+                child: ScoreBox(
+                  title: 'Algae Processed',
+                  field: AutoScoreField.algaeProcessed,
+                ),
+              ),
             ],
           ),
         ),
@@ -84,49 +125,79 @@ class AutoTab extends StatelessWidget {
     );
   }
 }
-
-class ScoreBox extends StatefulWidget {
+class ScoreBox extends ConsumerStatefulWidget {
   final String title;
-
-  const ScoreBox({super.key, required this.title});
-
+  final AutoScoreField field;
+  const ScoreBox({
+    super.key,
+    required this.title,
+    required this.field,
+  });
   @override
-  State<ScoreBox> createState() => _ScoreBoxState();
+  ConsumerState<ScoreBox> createState() => _ScoreBoxState();
 }
 
-class _ScoreBoxState extends State<ScoreBox> {
-  int score = 0;
+class _ScoreBoxState extends ConsumerState<ScoreBox> {
+  void updateScore(int value) {
+    final notifier = ref.read(scoutingRecordProvider.notifier);
+    switch (widget.field) {
+      case AutoScoreField.coralL1:
+        notifier.updateAutoCoralL1(value);
+        break;
+      case AutoScoreField.coralL2:
+        notifier.updateAutoCoralL2(value);
+        break;
 
+      case AutoScoreField.coralL3:
+        notifier.updateAutoCoralL3(value);
+        break;
+      case AutoScoreField.coralL4:
+        notifier.updateAutoCoralL4(value);
+        break;
+      case AutoScoreField.algaeNet:
+        notifier.updateAutoAlgaeNet(value);
+        break;
+      case AutoScoreField.algaeProcessed:
+        notifier.updateAutoAlgaeProcessed(value);
+        break;
+    }
+  }
   @override
   Widget build(BuildContext context) {
+    final scoutingRecord = ref.watch(scoutingRecordProvider);
+    final displayedScore = switch (widget.field) {
+      AutoScoreField.coralL1 => scoutingRecord?.autoCoralL1 ?? 0,
+      AutoScoreField.coralL2 => scoutingRecord?.autoCoralL2 ?? 0,
+      AutoScoreField.coralL3 => scoutingRecord?.autoCoralL3 ?? 0,
+      AutoScoreField.coralL4 => scoutingRecord?.autoCoralL4 ?? 0,
+      AutoScoreField.algaeNet => scoutingRecord?.autoAlgaeNet ?? 0,
+      AutoScoreField.algaeProcessed =>
+      scoutingRecord?.autoAlgaeProcessed ?? 0,
+    };
     return Container(
       decoration: BoxDecoration(border: Border.all(color: Colors.black)),
       child: Column(
         children: [
           Text(widget.title, style: Theme.of(context).textTheme.titleMedium),
-
           Expanded(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 IconButton(
                   onPressed: () {
-                    setState(() {
-                      if (score > 0) {
-                        score--;
-                      }
-                    });
+                    if (displayedScore > 0) {
+                      updateScore(displayedScore - 1);
+                    }
                   },
                   icon: Icon(Icons.remove),
                 ),
-
-                Text('$score', style: Theme.of(context).textTheme.bodyLarge),
-
+                Text(
+                  '$displayedScore',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
                 IconButton(
                   onPressed: () {
-                    setState(() {
-                      score++;
-                    });
+                    updateScore(displayedScore + 1);
                   },
                   icon: Icon(Icons.add),
                 ),

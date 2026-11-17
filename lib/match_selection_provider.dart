@@ -5,12 +5,10 @@ class SelectedMatch extends Notifier<int?> {
   int? build() {
     return null;
   }
-
   void set(int? match) {
     state = match;
   }
 }
-
 final selectedMatchProvider = NotifierProvider<SelectedMatch, int?>(
   SelectedMatch.new,
 );

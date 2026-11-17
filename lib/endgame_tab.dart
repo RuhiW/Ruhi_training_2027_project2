@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:training_2027_project2/scouting_record_provider.dart';
+import 'package:training_2027_project2/classes.dart';
 
-class EndgameTab extends StatefulWidget {
+class EndgameTab extends ConsumerStatefulWidget {
   const EndgameTab({super.key});
-
   @override
-  State<EndgameTab> createState() => _EndgameTabState();
+  ConsumerState<EndgameTab> createState() => _EndgameTabState();
 }
 
-class _EndgameTabState extends State<EndgameTab> {
-  String? finalResult;
-
+class _EndgameTabState extends ConsumerState<EndgameTab> {
   @override
   Widget build(BuildContext context) {
+    final scoutingRecord = ref.watch(scoutingRecordProvider);
     return Container(
       color: Theme.of(context).scaffoldBackgroundColor,
       child: Column(
@@ -28,7 +29,7 @@ class _EndgameTabState extends State<EndgameTab> {
                     ),
                     child: Center(
                       child: Text(
-                        'Box 1',
+                        'Match: ${scoutingRecord?.matchNumber ?? '-'}',
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     ),
@@ -41,7 +42,7 @@ class _EndgameTabState extends State<EndgameTab> {
                     ),
                     child: Center(
                       child: Text(
-                        'Box 2',
+                        'Team: ${scoutingRecord?.teamNumber ?? '-'}',
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     ),
@@ -54,7 +55,7 @@ class _EndgameTabState extends State<EndgameTab> {
                     ),
                     child: Center(
                       child: Text(
-                        'Box 3',
+                        'Alliance: ${scoutingRecord?.alliancePosition.name ?? '-'}',
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     ),
@@ -63,7 +64,6 @@ class _EndgameTabState extends State<EndgameTab> {
               ],
             ),
           ),
-
           Expanded(
             child: Center(
               child: Column(
@@ -75,22 +75,22 @@ class _EndgameTabState extends State<EndgameTab> {
                   ),
 
                   const SizedBox(height: 35),
-
                   Material(
                     color: Colors.transparent,
-                    child: RadioGroup<String>(
-                      groupValue: finalResult,
+                    child: RadioGroup<EndgameResult>(
+                      groupValue: scoutingRecord?.endgameResult,
                       onChanged: (value) {
-                        setState(() {
-                          finalResult = value;
-                        });
+                        if (value != null) {
+                          ref.read(scoutingRecordProvider.notifier)
+                              .updateEndgameResult(value);
+                        }
                       },
                       child: Column(
                         children: [
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Radio<String>(value: 'No Endgame Score'),
+                              Radio<EndgameResult>(value: EndgameResult.noScore),
                               Text(
                                 'No Endgame Score',
                                 style: Theme.of(context).textTheme.labelLarge,
@@ -101,7 +101,7 @@ class _EndgameTabState extends State<EndgameTab> {
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Radio<String>(value: 'Parked'),
+                              Radio<EndgameResult>(value: EndgameResult.parked),
                               Text(
                                 'Parked',
                                 style: Theme.of(context).textTheme.labelLarge,
@@ -112,7 +112,7 @@ class _EndgameTabState extends State<EndgameTab> {
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Radio<String>(value: 'Shallow Cage'),
+                              Radio<EndgameResult>(value: EndgameResult.shallowCage),
                               Text(
                                 'Shallow Cage',
                                 style: Theme.of(context).textTheme.labelLarge,
@@ -123,7 +123,7 @@ class _EndgameTabState extends State<EndgameTab> {
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Radio<String>(value: 'Deep Cage'),
+                              Radio<EndgameResult>(value: EndgameResult.deepCage),
                               Text(
                                 'Deep Cage',
                                 style: Theme.of(context).textTheme.labelLarge,
@@ -134,14 +134,17 @@ class _EndgameTabState extends State<EndgameTab> {
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 40),
-
                   ElevatedButton(
                     onPressed: () {
-                      context.go('/');
+                      final record = ref.read(scoutingRecordProvider);
+
+                      if (record != null) {
+                        ref.read(savedRecordsProvider.notifier).saveRecord(record);
+                        context.go('/');
+                      }
                     },
-                    child: Text('Save and Quit'),
+                    child: const Text('Save and Quit'),
                   ),
                 ],
               ),

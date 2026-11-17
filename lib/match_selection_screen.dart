@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:training_2027_project2/Providers/match_selection_provider.dart';
+import 'package:training_2027_project2/match_selection_provider.dart';
+import 'package:training_2027_project2/scouting_record_provider.dart';
 
 import 'alliance.dart';
-
-import 'package:training_2027_project2/Providers/teams_provider.dart';
-import 'package:training_2027_project2/Providers/matches_provider.dart';
+import 'package:training_2027_project2/teams_provider.dart';
+import 'package:training_2027_project2/matches_provider.dart';
 
 class SelectedAlliance extends ConsumerWidget {
   const SelectedAlliance({super.key});
@@ -14,7 +14,6 @@ class SelectedAlliance extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedPosition = ref.watch(selectedPositionProvider);
-
     return SegmentedButton<AlliancePosition>(
       emptySelectionAllowed: true,
       style: ButtonStyle(
@@ -43,12 +42,30 @@ class SelectedAlliance extends ConsumerWidget {
     );
   }
 }
-
-class MatchSelectionScreen extends ConsumerWidget {
+class MatchSelectionScreen extends ConsumerStatefulWidget {
   const MatchSelectionScreen({super.key});
+  @override
+  ConsumerState<MatchSelectionScreen> createState() =>
+      _MatchSelectionScreenState();
+}
+class _MatchSelectionScreenState
+    extends ConsumerState<MatchSelectionScreen> {
+  late final TextEditingController matchController;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  void initState() {
+    super.initState();
+    matchController = TextEditingController(
+      text: ref.read(selectedMatchProvider)?.toString() ?? '',
+    );
+  }
+  @override
+  void dispose() {
+    matchController.dispose();
+    super.dispose();
+  }
+  @override
+  Widget build(BuildContext context) {
     final matchesAsync = ref.watch(matchesProvider);
     final selectedMatch = ref.watch(selectedMatchProvider);
     final selectedPosition = ref.watch(selectedPositionProvider);
@@ -77,30 +94,27 @@ class MatchSelectionScreen extends ConsumerWidget {
       );
     }
     final allMatches = matchesAsync.asData?.value ?? [];
-
     final matchingMatches = allMatches
         .where((match) => match.matchNumber == selectedMatch)
         .toList();
-
     final selectedMatchData = matchingMatches.isEmpty
         ? null
         : matchingMatches.first;
     final selectedTeamKey =
-        selectedMatchData == null || selectedPosition == null
+    selectedMatchData == null || selectedPosition == null
         ? null
         : switch (selectedPosition) {
-            AlliancePosition.red1 => selectedMatchData.redTeamKeys[0],
-            AlliancePosition.red2 => selectedMatchData.redTeamKeys[1],
-            AlliancePosition.red3 => selectedMatchData.redTeamKeys[2],
-            AlliancePosition.blue1 => selectedMatchData.blueTeamKeys[0],
-            AlliancePosition.blue2 => selectedMatchData.blueTeamKeys[1],
-            AlliancePosition.blue3 => selectedMatchData.blueTeamKeys[2],
-          };
+      AlliancePosition.red1 => selectedMatchData.redTeamKeys[0],
+      AlliancePosition.red2 => selectedMatchData.redTeamKeys[1],
+      AlliancePosition.red3 => selectedMatchData.redTeamKeys[2],
+      AlliancePosition.blue1 => selectedMatchData.blueTeamKeys[0],
+      AlliancePosition.blue2 => selectedMatchData.blueTeamKeys[1],
+      AlliancePosition.blue3 => selectedMatchData.blueTeamKeys[2],
+    };
     final allTeams = teamsAsync.asData?.value ?? [];
     final matchingTeams = allTeams
         .where((team) => 'frc${team.teamNumber}' == selectedTeamKey)
         .toList();
-
     final selectedTeam = matchingTeams.isEmpty ? null : matchingTeams.first;
     return Scaffold(
       appBar: AppBar(
@@ -115,12 +129,12 @@ class MatchSelectionScreen extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           spacing: 35,
-
           children: [
             SizedBox(
               width: 300,
               height: 70,
               child: TextField(
+                controller: matchController,
                 onChanged: (value) {
                   ref
                       .read(selectedMatchProvider.notifier)
@@ -133,6 +147,7 @@ class MatchSelectionScreen extends ConsumerWidget {
                   labelText: 'Match Number',
                   labelStyle: const TextStyle(fontSize: 22),
                   hintText: 'Enter the match number',
+                  hintStyle: const TextStyle(fontSize: 16),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
@@ -146,14 +161,11 @@ class MatchSelectionScreen extends ConsumerWidget {
               child: DropdownButton<String>(
                 borderRadius: BorderRadius.circular(15),
                 isExpanded: true,
-
                 hint: const Text(
                   'Select an event',
                   style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
                 ),
-
                 value: ref.watch(selectedEventProvider),
-
                 items: const [
                   DropdownMenuItem(
                     value: '2025wasno',
@@ -164,7 +176,6 @@ class MatchSelectionScreen extends ConsumerWidget {
                     child: Text('Bonney Lake 2025'),
                   ),
                 ],
-
                 onChanged: (String? event) {
                   ref.read(selectedEventProvider.notifier).set(event);
                 },
@@ -173,26 +184,13 @@ class MatchSelectionScreen extends ConsumerWidget {
             SizedBox(
               width: 300,
               height: 70,
-
-              child: DropdownButton<int>(
-                borderRadius: BorderRadius.circular(15),
-                isExpanded: true,
-
-                hint: const Text(
-                  'Select a team',
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+              child: Center(
+                child: Text(
+                  selectedTeam == null
+                      ? 'Team will appear here'
+                      : '${selectedTeam.teamNumber} - ${selectedTeam.teamName}',
+                  style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
                 ),
-
-                value: selectedTeam?.teamNumber,
-
-                items: allTeams.map((team) {
-                  return DropdownMenuItem<int>(
-                    value: team.teamNumber,
-                    child: Text('${team.teamNumber} - ${team.teamName}'),
-                  );
-                }).toList(),
-
-                onChanged: null,
               ),
             ),
             const SelectedAlliance(),
@@ -202,7 +200,6 @@ class MatchSelectionScreen extends ConsumerWidget {
                 final match = ref.read(selectedMatchProvider);
                 final event = ref.read(selectedEventProvider);
                 final position = ref.read(selectedPositionProvider);
-
                 if (match == null ||
                     match <= 0 ||
                     event == null ||
@@ -211,17 +208,20 @@ class MatchSelectionScreen extends ConsumerWidget {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text(
-                        'Please complete all selections before continuing.',
+                        'Please enter a valid match number and complete all selections.',
                       ),
                     ),
                   );
-
                   return;
                 }
-
+                ref.read(scoutingRecordProvider.notifier).startRecord(
+                  eventKey: event,
+                  matchNumber: match,
+                  teamNumber: selectedTeam.teamNumber,
+                  alliancePosition: position,
+                );
                 context.go('/scouting-screen');
               },
-
               child: const Text(
                 'Continue',
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),

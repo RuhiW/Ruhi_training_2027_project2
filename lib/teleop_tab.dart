@@ -1,10 +1,25 @@
 import 'package:flutter/material.dart';
-
-class TeleopTab extends StatelessWidget {
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:training_2027_project2/scouting_record_provider.dart';
+enum TeleopScoreField {
+  coralL1,
+  coralL2,
+  coralL3,
+  coralL4,
+  missL1,
+  missL2,
+  missL3,
+  missL4,
+  algaeNet,
+  algaeProcessed,
+  penalties,
+}
+class TeleopTab extends ConsumerWidget {
   const TeleopTab({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final scoutingRecord = ref.watch(scoutingRecordProvider);
     return Container(
       color: Theme.of(context).scaffoldBackgroundColor,
       child: Column(
@@ -20,7 +35,7 @@ class TeleopTab extends StatelessWidget {
                     ),
                     child: Center(
                       child: Text(
-                        'Box 1',
+                        'Match: ${scoutingRecord?.matchNumber ?? '-'}',
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     ),
@@ -33,7 +48,7 @@ class TeleopTab extends StatelessWidget {
                     ),
                     child: Center(
                       child: Text(
-                        'Box 2',
+                        'Team: ${scoutingRecord?.teamNumber ?? '-'}',
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     ),
@@ -46,7 +61,7 @@ class TeleopTab extends StatelessWidget {
                     ),
                     child: Center(
                       child: Text(
-                        'Box 3',
+                        'Alliance: ${scoutingRecord?.alliancePosition.name ?? '-'}',
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     ),
@@ -59,9 +74,24 @@ class TeleopTab extends StatelessWidget {
           Expanded(
             child: Row(
               children: [
-                Expanded(child: TeleopScoreBox(title: 'Score L4')),
-                Expanded(child: TeleopScoreBox(title: 'Miss for L4')),
-                Expanded(child: TeleopScoreBox(title: 'Algae Processed')),
+                Expanded(
+                  child: TeleopScoreBox(
+                    title: 'Score L4',
+                    field: TeleopScoreField.coralL4,
+                  ),
+                ),
+                Expanded(
+                  child: TeleopScoreBox(
+                    title: 'Miss for L4',
+                    field: TeleopScoreField.missL4,
+                  ),
+                ),
+                Expanded(
+                  child: TeleopScoreBox(
+                    title: 'Algae Processed',
+                    field: TeleopScoreField.algaeProcessed,
+                  ),
+                ),
               ],
             ),
           ),
@@ -69,18 +99,42 @@ class TeleopTab extends StatelessWidget {
           Expanded(
             child: Row(
               children: [
-                Expanded(child: TeleopScoreBox(title: 'Score L3')),
-                Expanded(child: TeleopScoreBox(title: 'Miss for L3')),
-                Expanded(child: TeleopScoreBox(title: 'Algae in Net')),
+                Expanded(
+                  child: TeleopScoreBox(
+                    title: 'Score L3',
+                    field: TeleopScoreField.coralL3,
+                  ),
+                ),
+                Expanded(
+                  child: TeleopScoreBox(
+                    title: 'Miss for L3',
+                    field: TeleopScoreField.missL3,
+                  ),
+                ),
+                Expanded(
+                  child: TeleopScoreBox(
+                    title: 'Algae In Net',
+                    field: TeleopScoreField.algaeNet,
+                  ),
+                ),
               ],
             ),
           ),
-
           Expanded(
             child: Row(
               children: [
-                Expanded(child: TeleopScoreBox(title: 'Score L2')),
-                Expanded(child: TeleopScoreBox(title: 'Miss for L2')),
+                Expanded(
+                  child: TeleopScoreBox(
+                    title: 'Score L2',
+                    field: TeleopScoreField.coralL2,
+                  ),
+                ),
+                Expanded(
+                  child: TeleopScoreBox(
+                    title: 'Miss for L2',
+                    field: TeleopScoreField.missL2,
+                  ),
+                ),
                 Expanded(child: BrokeBox()),
               ],
             ),
@@ -89,9 +143,24 @@ class TeleopTab extends StatelessWidget {
           Expanded(
             child: Row(
               children: [
-                Expanded(child: TeleopScoreBox(title: 'Score L1')),
-                Expanded(child: TeleopScoreBox(title: 'Miss for L1')),
-                Expanded(child: TeleopScoreBox(title: 'Penalties')),
+                Expanded(
+                  child: TeleopScoreBox(
+                    title: 'Score L1',
+                    field: TeleopScoreField.coralL1,
+                  ),
+                ),
+                Expanded(
+                  child: TeleopScoreBox(
+                    title: 'Miss for L1',
+                    field: TeleopScoreField.missL1,
+                  ),
+                ),
+                Expanded(
+                  child: TeleopScoreBox(
+                    title: 'Penalties',
+                    field: TeleopScoreField.penalties,
+                  ),
+                ),
               ],
             ),
           ),
@@ -100,51 +169,103 @@ class TeleopTab extends StatelessWidget {
     );
   }
 }
-
-class TeleopScoreBox extends StatefulWidget {
+class TeleopScoreBox extends ConsumerStatefulWidget {
   final String title;
+  final TeleopScoreField field;
 
-  const TeleopScoreBox({super.key, required this.title});
+  const TeleopScoreBox({
+    super.key,
+    required this.title,
+    required this.field,
+  });
 
   @override
-  State<TeleopScoreBox> createState() => _TeleopScoreBoxState();
+  ConsumerState<TeleopScoreBox> createState() => _TeleopScoreBoxState();
 }
 
-class _TeleopScoreBoxState extends State<TeleopScoreBox> {
-  int score = 0;
-
+class _TeleopScoreBoxState extends ConsumerState<TeleopScoreBox> {
+  void updateScore(int value) {
+    final notifier = ref.read(scoutingRecordProvider.notifier);
+    switch (widget.field) {
+      case TeleopScoreField.coralL1:
+        notifier.updateTeleopCoralL1(value);
+        break;
+      case TeleopScoreField.coralL2:
+        notifier.updateTeleopCoralL2(value);
+        break;
+      case TeleopScoreField.coralL3:
+        notifier.updateTeleopCoralL3(value);
+        break;
+      case TeleopScoreField.coralL4:
+        notifier.updateTeleopCoralL4(value);
+        break;
+      case TeleopScoreField.missL1:
+        notifier.updateTeleopMissL1(value);
+        break;
+      case TeleopScoreField.missL2:
+        notifier.updateTeleopMissL2(value);
+        break;
+      case TeleopScoreField.missL3:
+        notifier.updateTeleopMissL3(value);
+        break;
+      case TeleopScoreField.missL4:
+        notifier.updateTeleopMissL4(value);
+        break;
+      case TeleopScoreField.algaeNet:
+        notifier.updateTeleopAlgaeNet(value);
+        break;
+      case TeleopScoreField.algaeProcessed:
+        notifier.updateTeleopAlgaeProcessed(value);
+        break;
+      case TeleopScoreField.penalties:
+        notifier.updatePenalties(value);
+        break;
+    }
+  }
   @override
   Widget build(BuildContext context) {
+    final scoutingRecord = ref.watch(scoutingRecordProvider);
+
+    final displayedScore = switch (widget.field) {
+      TeleopScoreField.coralL1 => scoutingRecord?.teleopCoralL1 ?? 0,
+      TeleopScoreField.coralL2 => scoutingRecord?.teleopCoralL2 ?? 0,
+      TeleopScoreField.coralL3 => scoutingRecord?.teleopCoralL3 ?? 0,
+      TeleopScoreField.coralL4 => scoutingRecord?.teleopCoralL4 ?? 0,
+      TeleopScoreField.missL1 => scoutingRecord?.teleopMissL1 ?? 0,
+      TeleopScoreField.missL2 => scoutingRecord?.teleopMissL2 ?? 0,
+      TeleopScoreField.missL3 => scoutingRecord?.teleopMissL3 ?? 0,
+      TeleopScoreField.missL4 => scoutingRecord?.teleopMissL4 ?? 0,
+      TeleopScoreField.algaeNet => scoutingRecord?.teleopAlgaeNet ?? 0,
+      TeleopScoreField.algaeProcessed =>
+      scoutingRecord?.teleopAlgaeProcessed ?? 0,
+      TeleopScoreField.penalties => scoutingRecord?.penalties ?? 0,
+    };
     return Container(
       decoration: BoxDecoration(border: Border.all(color: Colors.black)),
       child: Column(
         children: [
           Text(widget.title, style: Theme.of(context).textTheme.titleMedium),
-
           Expanded(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 IconButton(
-                  onPressed: () {
-                    setState(() {
-                      if (score > 0) {
-                        score--;
-                      }
-                    });
-                  },
-                  icon: Icon(Icons.remove),
+                  onPressed: displayedScore > 0
+                      ? () {
+                    updateScore(displayedScore - 1);
+                  }
+                      : null,
+                  icon: const Icon(Icons.remove),
                 ),
-
-                Text('$score', style: Theme.of(context).textTheme.bodyLarge),
-
+                Text(
+                  '$displayedScore',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
                 IconButton(
                   onPressed: () {
-                    setState(() {
-                      score++;
-                    });
+                    updateScore(displayedScore + 1);
                   },
-                  icon: Icon(Icons.add),
+                  icon: const Icon(Icons.add),
                 ),
               ],
             ),
@@ -154,34 +275,31 @@ class _TeleopScoreBoxState extends State<TeleopScoreBox> {
     );
   }
 }
-
-class BrokeBox extends StatefulWidget {
+class BrokeBox extends ConsumerStatefulWidget {
   const BrokeBox({super.key});
 
   @override
-  State<BrokeBox> createState() => _BrokeBoxState();
+  ConsumerState<BrokeBox> createState() => _BrokeBoxState();
 }
-
-class _BrokeBoxState extends State<BrokeBox> {
-  bool? broke;
-
+class _BrokeBoxState extends ConsumerState<BrokeBox> {
   @override
   Widget build(BuildContext context) {
+    final scoutingRecord = ref.watch(scoutingRecordProvider);
+    final broke = scoutingRecord?.broke;
     return Container(
       decoration: BoxDecoration(border: Border.all(color: Colors.black)),
       child: Column(
         children: [
           Text('Broke?', style: Theme.of(context).textTheme.titleMedium),
-
           Expanded(
             child: Material(
               color: Colors.transparent,
               child: RadioGroup<bool>(
                 groupValue: broke,
                 onChanged: (value) {
-                  setState(() {
-                    broke = value;
-                  });
+                  if (value != null) {
+                    ref.read(scoutingRecordProvider.notifier).updateBroke(value);
+                  }
                 },
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,

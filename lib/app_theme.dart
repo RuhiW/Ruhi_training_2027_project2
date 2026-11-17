@@ -6,14 +6,13 @@ class AppTheme {
     brightness: Brightness.light,
     fontFamily: GoogleFonts.poppins().fontFamily,
     scaffoldBackgroundColor: Colors.white,
-    iconTheme: IconThemeData(color: Colors.yellow.shade200),
-
+    iconTheme: IconThemeData(color: Colors.yellow.shade800),
     colorScheme: ColorScheme.light(
       primary: Colors.black,
       onPrimary: Colors.white,
-      secondary: Colors.yellow.shade100,
+      secondary: Colors.yellow.shade200,
       onSecondary: Colors.black,
-      surface: Colors.yellow.shade100,
+      surface: Colors.yellow.shade200,
       onSurface: Colors.black,
     ),
     textTheme: TextTheme(
@@ -33,7 +32,6 @@ class AppTheme {
     fontFamily: GoogleFonts.poppins().fontFamily,
     scaffoldBackgroundColor: Colors.grey.shade900,
     iconTheme: IconThemeData(color: Colors.yellow),
-
     colorScheme: ColorScheme.dark(
       primary: Colors.yellow,
       onPrimary: Colors.black,
